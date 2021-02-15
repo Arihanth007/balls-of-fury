@@ -10,7 +10,7 @@ from config import height, width
 class Slider:
 
     def init_slider(self, play_field):
-        self.slider_width = np.array([4, 16], dtype=int)
+        self.slider_width = np.array([width/2-8, width/2+8], dtype=int)
         self.slider_height = height-2
 
         for i in range(self.slider_width[0], self.slider_width[1]):
@@ -32,13 +32,8 @@ class Slider:
 
         display(play_field)
 
-    def move(self, play_field):
-        k = getInput()
-        key_press = k.__call__()
-        while key_press != 'q':
-            if key_press == 'd':
-                self.print_slider(1, play_field)
-            elif key_press == 'a':
-                self.print_slider(-1, play_field)
-
-            key_press = k.__call__()
+    def move(self, play_field, key_press):
+        if key_press == 'd':
+            self.print_slider(1, play_field)
+        elif key_press == 'a':
+            self.print_slider(-1, play_field)
