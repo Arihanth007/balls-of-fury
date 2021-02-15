@@ -25,14 +25,15 @@ time_elapsed = 0.1
 def main():
     display(screen.play_field)
 
-    key_pressed = key_input.__call__()
-    if key_pressed == 'q':
-        return False
-    slider.move(screen.play_field, key_pressed)
+    ball.set_state(screen.play_field)
+    ball.print(screen.play_field)
 
     return True
 
 
 while main():
-    # sleep(0.2)
+    key_pressed = key_input.__call__()
+    if key_pressed == 'q':
+        break
+    slider.move(screen.play_field, key_pressed)
     pass
