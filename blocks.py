@@ -13,11 +13,15 @@ class Blocks:
         self.block_size = block_size
 
     def init_blocks(self, play_field):
+        def set_blocks(num, color):
+            cords = self.generate_pattern(num)
+            for cord in cords:
+                play_field[cord[0] % height][cord[1]] = color + ' '
+                play_field[cord[0] % height][cord[1]+1] = Back.BLACK + ' '
 
-        cords = self.generate_pattern()
-        for cord in cords:
-            play_field[cord[0] % height][cord[1]] = Back.GREEN + ' '
-            play_field[cord[0] % height][cord[1]+1] = Back.BLACK + ' '
+        set_blocks(50, Back.GREEN)
+        set_blocks(50, Back.BLUE)
+        set_blocks(50, Back.RED)
 
     def generate_pattern(self, num):
         cords = []

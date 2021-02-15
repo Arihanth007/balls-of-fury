@@ -10,7 +10,7 @@ from config import height, width
 class Slider:
 
     def init_slider(self, play_field):
-        self.slider_width = np.array([4, 8], dtype=int)
+        self.slider_width = np.array([4, 16], dtype=int)
         self.slider_height = height-2
 
         for i in range(self.slider_width[0], self.slider_width[1]):
