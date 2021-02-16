@@ -18,7 +18,7 @@ class Slider:
 
     def print_slider(self, val, play_field):
         for i in range(self.slider_width[0], self.slider_width[1]):
-            play_field[self.slider_height][i] = ' '
+            play_field[self.slider_height][i] = Back.BLACK + ' '
 
         if val > 0 and self.slider_width[1]+val < width:
             self.slider_width[0] += val

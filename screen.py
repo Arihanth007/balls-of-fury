@@ -10,7 +10,16 @@ def display(play_field):
     os.system('clear')
     for i in range(height):
         for j in range(width):
-            print(play_field[i][j], end='')
+            if play_field[i][j] == 'red':
+                print(Back.RED + ' ', end='')
+            elif play_field[i][j] == 'green':
+                print(Back.GREEN + ' ', end='')
+            elif play_field[i][j] == 'blue':
+                print(Back.BLUE + ' ', end='')
+            elif play_field[i][j] == 'ball':
+                print('*', end='')
+            else:
+                print(play_field[i][j], end='')
         print('')
 
 
@@ -21,7 +30,7 @@ class Screen:
         self.height = height
         self.width = width
 
-        self.play_field = np.array([[' ' for j in range(
+        self.play_field = np.array([[Back.BLACK + ' ' for j in range(
             self.width)] for i in range(self.height)], dtype='object')
 
         for i in range(self.height):

@@ -15,6 +15,7 @@ class Ball:
         self.next = [self.start[0], self.start[1]]
         self.velocity = 1
         self.prev_board = Back.BLACK + ' '
+        self.collided_with = None
         pass
 
     def init_ball(self, play_field):
@@ -50,14 +51,17 @@ class Ball:
             if self.next[0]+x == block[0] and self.next[1]+y == block[1]:
                 self.next[0] -= x
                 self.next[1] -= y
+                self.collided_with = block
                 return True
             elif self.next[0]+x == block[0] and self.next[1] == block[1]:
                 self.next[0] -= x
                 self.next[1] += y
+                self.collided_with = block
                 return True
             elif self.next[1]+y == block[1] and self.next[0] == block[0]:
                 self.next[0] += x
                 self.next[1] -= y
+                self.collided_with = block
                 return True
 
         return False
@@ -76,6 +80,7 @@ class Ball:
 
         if not self.check_obstacle_collision(x, y, play_field, blocks):
             self.check_wall_collision(x, y)
+            self.collided_with = None
 
         self.prev_board = play_field[self.previous[0]][self.previous[1]]
         self.previous = [self.current[0], self.current[1]]

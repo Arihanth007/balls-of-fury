@@ -32,8 +32,12 @@ while key_input.__call__() != 'p':
 def main():
     display(screen.play_field)
 
-    isTrue = ball.set_state(screen.play_field)
+    isTrue = ball.set_state(screen.play_field, blocks.blocks)
     ball.print(screen.play_field)
+    if ball.collided_with is not None:
+        blocks.reduce_block_strength(ball.collided_with, screen.play_field)
+        print('Removed')
+    blocks.refresh_blocks(screen.play_field)
 
     return isTrue
 
