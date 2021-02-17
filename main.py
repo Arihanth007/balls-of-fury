@@ -9,8 +9,8 @@ from input import input_to
 screen = Screen(30, 79)
 slider = Slider()
 blue_blocks = BlueBlocks(1, 'blue')
-green_blocks = GreenBlocks(2, 'green')
-red_blocks = RedBlocks(3, 'red')
+green_blocks = GreenBlocks(1, 'green')
+red_blocks = RedBlocks(1, 'red')
 indestructible_blocks = IndestructibleBlocks(np.inf, 'yellow')
 ball = Ball()
 key_input = getInput()
@@ -27,7 +27,14 @@ isTrue = True
 
 display(screen.play_field)
 ball.print(screen.play_field)
-while key_input.__call__() != 'p':
+
+print('Adjust the board and press P to start the game')
+k_press = 'notPlol'
+while k_press != 'p':
+    slider.move(screen.play_field, k_press)
+    ball.place_ball(screen.play_field, [
+                    slider.slider_width[0], slider.slider_width[1]])
+    k_press = key_input.__call__()
     pass
 
 
@@ -68,18 +75,18 @@ def main():
     display(screen.play_field)
 
     all_blocks = combine_all_blocks()
-    isTrue = ball.set_state(screen.play_field, all_blocks)
+    isTrue = ball.set_state(screen.play_field, all_blocks, [
+                            slider.slider_width[0], slider.slider_width[1]])
     ball.print(screen.play_field)
     if ball.collided_with is not None:
         update_block_strength()
-        print('Removed')
     refresh_all_blocks()
     return isTrue
 
 
 while main():
-    key_pressed = key_input.__call__()
-    # key_pressed = input_to(key_input.__call__)
+    # key_pressed = key_input.__call__()
+    key_pressed = input_to(key_input.__call__)
     if key_pressed == 'q':
         break
     slider.move(screen.play_field, key_pressed)

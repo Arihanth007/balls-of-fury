@@ -34,8 +34,11 @@ class Blocks:
     def generate_random_pattern(self, num, row):
         cords = []
         for i in range(num):
-            cords.append([np.random.randint(row, row+1),
-                          np.random.randint(10, width-10)])
+            # cords.append([row, (i*2+10)])
+            cords.append([row, (i*6+10)])
+        # for i in range(num):
+        #     cords.append([np.random.randint(row, row+1),
+        #                   np.random.randint(10, width-10)])
         return cords
 
     def refresh_blocks(self, play_field):
