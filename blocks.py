@@ -15,14 +15,14 @@ class Blocks:
         self.strength = strength
         self.color = color
 
-    def reduce_block_strength(self, block, play_field):
+    def reduce_block_strength(self, block, play_field, num):
         play_field[block[0]][block[1]] = Back.BLACK + ' '
         for index, bl in enumerate(self.blocks):
             if bl == block:
-                if bl[3] <= 1:
+                if bl[3]-num <= 0:
                     self.blocks.remove(bl)
                 else:
-                    self.blocks[index][3] -= 1
+                    self.blocks[index][3] -= num
 
     def init_blocks(self, play_field, num, row):
         cords = self.generate_random_pattern(num, row)

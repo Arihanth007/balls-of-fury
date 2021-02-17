@@ -8,17 +8,15 @@ from config import height, width
 
 class Ball:
 
-    def __init__(self) -> None:
+    def __init__(self):
         self.start = [height-3, int(width/2)]
-        self.end = [0, 0]
         self.previous = [self.start[0]+1, self.start[1]+1]
         self.current = [self.start[0], self.start[1]]
         self.next = [self.start[0], self.start[1]]
         self.x_velocity = 1
         self.y_velocity = 1
-        self.prev_board = Back.BLACK + ' '
         self.collided_with = None
-        pass
+        self.power_up_collision = False
 
     def init_ball(self, play_field):
         play_field[self.start[0]][self.start[1]] = '*'
@@ -39,6 +37,13 @@ class Ball:
             self.previous[1] += t
             play_field[self.current[0]][self.current[1]] = 'ball'
             self.start[1] = self.current[1]
+
+    def increase_speed(self):
+        self.x_velocity = 2
+        self.y_velocity = 2
+
+    def pass_through_blocks(self):
+        self.power_up_collision = True
 
     def check_slider_collision(self, x, y, play_field, slider_dimensions):
         slider_width = slider_dimensions[1] - slider_dimensions[0]
@@ -87,6 +92,11 @@ class Ball:
                 X_collision = True
                 Y_collision = True
 
+                if self.next[0] == block[0]:
+                    X_collision = False
+                if self.next[1] == block[1]:
+                    Y_collision = False
+
                 self.collided_with = [block]
                 if block[2] == 'yellow':
                     for bl in blocks:
@@ -97,6 +107,11 @@ class Ball:
                             for powerup_block in self.collided_with:
                                 if (bl[0] == powerup_block[0]+1 or bl[0] == powerup_block[0]-1) and (bl[1] == powerup_block[1]+1 or bl[1] == powerup_block[1]-1):
                                     self.collided_with.append(bl)
+
+        if (X_collision or Y_collision) and self.power_up_collision:
+            self.next[0] += x
+            self.next[1] += y
+            return True
 
         if X_collision and Y_collision:
             self.next[0] -= x
@@ -121,15 +136,24 @@ class Ball:
             y *= -1
         print(x, y)
 
-        if not self.check_slider_collision(x, y, play_field, slider_dimensions):
-            return False
+        if self.check_slider_collision(x, y, play_field, slider_dimensions):
 
-        if not self.check_obstacle_collision(x, y, play_field, blocks):
-            self.check_wall_collision(x, y)
-            self.collided_with = None
+            if not self.check_obstacle_collision(x, y, play_field, blocks):
+                self.check_wall_collision(x, y)
+                self.collided_with = None
 
-        self.prev_board = play_field[self.previous[0]][self.previous[1]]
-        self.previous = [self.current[0], self.current[1]]
-        self.current = [self.next[0], self.next[1]]
+            self.previous = [self.current[0], self.current[1]]
+            self.current = [self.next[0], self.next[1]]
 
-        return True
+            return True
+
+        return False
+
+
+class SecondBall(Ball):
+
+    def init_second_ball(self, starting_pos):
+        self.start = [starting_pos[0], starting_pos[1]]
+        self.previous = [self.start[0]+1, self.start[1]+1]
+        self.current = [self.start[0], self.start[1]]
+        self.next = [self.start[0], self.start[1]]

@@ -1,43 +1,61 @@
+from colorama.ansi import Back
 import numpy as np
 from screen import Screen, display
 from slider import Slider
 from blocks import GreenBlocks, RedBlocks, BlueBlocks, IndestructibleBlocks, PowerupBlocks
-from ball import Ball
+from ball import Ball, SecondBall
 from input import getInput
 from input import input_to
 
+
+# Creating instances of classes
 screen = Screen(30, 79)
 slider = Slider()
+
 blue_blocks = BlueBlocks(1, 'blue')
 green_blocks = GreenBlocks(2, 'green')
 red_blocks = RedBlocks(3, 'red')
-indestructible_blocks = IndestructibleBlocks(1, 'white')
+indestructible_blocks = IndestructibleBlocks(10, 'white')
 powerup_blocks = PowerupBlocks(1, 'yellow')
+
 ball = Ball()
+second_ball = SecondBall()
 key_input = getInput()
 
+
+# Initializations
 slider.init_slider(screen.play_field)
-indestructible_blocks.init_blocks(screen.play_field, 5, 2)
+
+indestructible_blocks.init_blocks(screen.play_field, 15, 2)
 red_blocks.init_blocks(screen.play_field, 10, 5)
 powerup_blocks.init_blocks(screen.play_field, 50, 11)
 green_blocks.init_blocks(screen.play_field, 10, 7)
 blue_blocks.init_blocks(screen.play_field, 10, 10)
-ball.init_ball(screen.play_field)
 
-time_elapsed = 0.1
-isTrue = True
+ball.init_ball(screen.play_field)
+# second_ball.init_second_ball([5, 5])
+# second_ball.init_ball(screen.play_field)
 
 display(screen.play_field)
 ball.print(screen.play_field)
+# second_ball.print(screen.play_field)
 
-print('Adjust the board and press P to start the game')
-k_press = 'notPlol'
-while k_press != 'p':
-    slider.move(screen.play_field, k_press)
-    ball.place_ball(screen.play_field, [
-                    slider.slider_width[0], slider.slider_width[1]])
-    k_press = key_input.__call__()
-    pass
+
+#  Global variables
+isTrue1 = True
+isTrue2 = False
+
+
+def hold_ball():
+    # Queue to start game
+    print('Adjust the board and press P to resume')
+    k_press = 'notPlol'
+    while k_press != 'p':
+        slider.move(screen.play_field, k_press)
+        ball.place_ball(screen.play_field, [
+                        slider.slider_width[0], slider.slider_width[1]])
+        k_press = key_input.__call__()
+        pass
 
 
 def refresh_all_blocks():
@@ -48,20 +66,49 @@ def refresh_all_blocks():
 
 
 def update_block_strength():
+    num = 1
+    if ball.power_up_collision:
+        num = np.inf
     for block in ball.collided_with:
         color = block[2]
         if color == 'green':
             green_blocks.reduce_block_strength(
-                block, screen.play_field)
+                block, screen.play_field, num)
         elif color == 'red':
             red_blocks.reduce_block_strength(
-                block, screen.play_field)
+                block, screen.play_field, num)
         elif color == 'blue':
             blue_blocks.reduce_block_strength(
-                block, screen.play_field)
+                block, screen.play_field, num)
         elif color == 'yellow':
             powerup_blocks.reduce_block_strength(
-                block, screen.play_field)
+                block, screen.play_field, num)
+        elif color == 'white':
+            indestructible_blocks.reduce_block_strength(
+                block, screen.play_field, num)
+
+
+def update_second_block_strength():
+    num = 1
+    if second_ball.power_up_collision:
+        num = np.inf
+    for block in second_ball.collided_with:
+        color = block[2]
+        if color == 'green':
+            green_blocks.reduce_block_strength(
+                block, screen.play_field, num)
+        elif color == 'red':
+            red_blocks.reduce_block_strength(
+                block, screen.play_field, num)
+        elif color == 'blue':
+            blue_blocks.reduce_block_strength(
+                block, screen.play_field, num)
+        elif color == 'yellow':
+            powerup_blocks.reduce_block_strength(
+                block, screen.play_field, num)
+        elif color == 'white':
+            indestructible_blocks.reduce_block_strength(
+                block, screen.play_field, num)
 
 
 def combine_all_blocks():
@@ -83,14 +130,30 @@ def main():
     display(screen.play_field)
 
     all_blocks = combine_all_blocks()
-    isTrue = ball.set_state(screen.play_field, all_blocks, [
-                            slider.slider_width[0], slider.slider_width[1]])
-    ball.print(screen.play_field)
+    global isTrue1
+    global isTrue2
+
+    if isTrue1:
+        isTrue1 = ball.set_state(screen.play_field, all_blocks, [
+            slider.slider_width[0], slider.slider_width[1]])
+        ball.print(screen.play_field)
+    if isTrue2:
+        isTrue2 = second_ball.set_state(screen.play_field, all_blocks, [
+            slider.slider_width[0], slider.slider_width[1]])
+        second_ball.print(screen.play_field)
+
     if ball.collided_with is not None:
         update_block_strength()
     refresh_all_blocks()
-    return isTrue
 
+    if second_ball.collided_with is not None:
+        update_second_block_strength()
+    refresh_all_blocks()
+
+    return isTrue1 or isTrue2
+
+
+hold_ball()
 
 while main():
     # key_pressed = key_input.__call__()
