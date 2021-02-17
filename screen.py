@@ -18,6 +18,8 @@ def display(play_field):
                 print(Back.BLUE + ' ', end='')
             elif play_field[i][j] == 'yellow':
                 print(Back.YELLOW + ' ', end='')
+            elif play_field[i][j] == 'white':
+                print(Back.WHITE + ' ', end='')
             elif play_field[i][j] == 'ball':
                 print('*', end='')
             else:

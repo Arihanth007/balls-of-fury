@@ -44,7 +44,6 @@ class Ball:
         slider_width = slider_dimensions[1] - slider_dimensions[0]
         slider_mid = int(slider_dimensions[1] - (slider_width/2))
 
-        # print(self.current[1]+y, slider_mid)
         if self.current[0] >= height-1-x:
             if self.current[1]+y >= slider_dimensions[0] and self.current[1]+y <= slider_dimensions[1]:
                 self.y_velocity = 1 + np.abs(
@@ -55,8 +54,6 @@ class Ball:
                     y = self.y_velocity
                 self.next[0] -= x
                 if (y > 0 and self.current[1]+y <= slider_mid) or (y < 0 and self.current[1]+y >= slider_mid):
-                    # print('reversed')
-                    # sleep(1)
                     self.next[1] -= y
                 else:
                     self.next[1] += y
@@ -89,7 +86,17 @@ class Ball:
             if [block[0], block[1]] in collision_box:
                 X_collision = True
                 Y_collision = True
-                self.collided_with = block
+
+                self.collided_with = [block]
+                if block[2] == 'yellow':
+                    for bl in blocks:
+                        if bl[2] == 'yellow' and bl != block:
+                            self.collided_with.append(bl)
+                    for bl in blocks:
+                        if bl[2] != 'yellow':
+                            for powerup_block in self.collided_with:
+                                if (bl[0] == powerup_block[0]+1 or bl[0] == powerup_block[0]-1) and (bl[1] == powerup_block[1]+1 or bl[1] == powerup_block[1]-1):
+                                    self.collided_with.append(bl)
 
         if X_collision and Y_collision:
             self.next[0] -= x
