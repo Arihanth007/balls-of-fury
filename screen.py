@@ -22,9 +22,18 @@ def display(play_field):
                 print(Back.WHITE + ' ', end='')
             elif play_field[i][j] == 'ball':
                 print('*', end='')
+            elif play_field[i][j] == 'powerup':
+                print(Back.MAGENTA + ' ', end='')
             else:
                 print(play_field[i][j], end='')
         print('')
+
+
+def flush_display(play_field):
+    for i in range(height):
+        for j in range(width):
+            if play_field[i][j] == 'ball':
+                play_field[i][j] = Back.BLACK + ' '
 
 
 class Screen:

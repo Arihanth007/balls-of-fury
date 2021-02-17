@@ -44,8 +44,16 @@ class Slider:
 
     def shrink_slider(self, play_field):
         self.swidth = 4
+        self.slider_width[0] += 4
+        self.slider_width[1] -= 4
         self.init_slider(play_field)
 
     def expand_slider(self,  play_field):
         self.swidth = 16
+        if self.slider_width[0] - 4 <= 1:
+            self.slider_width += (self.slider_width[0]-4)
+        if self.slider_width[1] + 4 >= width-1:
+            self.slider_width += (self.slider_width[1]+4)
+        self.slider_width[0] -= 4
+        self.slider_width[1] += 4
         self.init_slider(play_field)

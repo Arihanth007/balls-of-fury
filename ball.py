@@ -19,7 +19,7 @@ class Ball:
         self.power_up_collision = False
 
     def init_ball(self, play_field):
-        play_field[self.start[0]][self.start[1]] = '*'
+        play_field[self.start[0]][self.start[1]] = 'ball'
 
     def print(self, play_field):
         play_field[self.previous[0]][self.previous[1]] = Back.BLACK + ' '
@@ -142,18 +142,9 @@ class Ball:
                 self.check_wall_collision(x, y)
                 self.collided_with = None
 
+            play_field[self.previous[0]][self.previous[1]] = Back.BLACK + ' '
             self.previous = [self.current[0], self.current[1]]
             self.current = [self.next[0], self.next[1]]
-
             return True
 
         return False
-
-
-class SecondBall(Ball):
-
-    def init_second_ball(self, starting_pos):
-        self.start = [starting_pos[0], starting_pos[1]]
-        self.previous = [self.start[0]+1, self.start[1]+1]
-        self.current = [self.start[0], self.start[1]]
-        self.next = [self.start[0], self.start[1]]

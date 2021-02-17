@@ -62,7 +62,3 @@ class PowerupBlocks(Blocks):
 
     def generate_random_pattern(self, num, row):
         return [[row, int(width/2)-int(num/2)+i] for i in range(num)]
-
-    def refresh_blocks(self, play_field):
-        for block in self.blocks:
-            play_field[block[0]][block[1]] = block[2]
