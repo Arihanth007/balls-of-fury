@@ -1,8 +1,6 @@
 import os
-from time import sleep
 import numpy as np
 from colorama import Fore, Back, Style
-from input import getInput
 from config import height, width
 
 

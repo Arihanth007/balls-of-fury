@@ -1,32 +1,27 @@
-import numpy as np
-from time import clock_getres, sleep
-from colorama import Fore, Back, Style
-from input import getInput
-from screen import display
 from config import height, width, lives
 
 
 class Score:
 
     def __init__(self) -> None:
-        self.score = 0
-        self.time = 0
-        self.lives = lives
-        self.output = 'Score: {}, Time: {}, Lives: {}'.format(
-            self.score, self.time, self.lives)
+        self.__score = 0
+        self.__time = 0
+        self.__lives = lives
+        self.__output = 'Score: {}, Time: {}, Lives: {}'.format(
+            self.__score, self.__time, self.__lives)
 
     def update_score(self, count, tme, lives, play_field):
-        self.score += count
-        self.time += tme
-        self.lives -= lives
-        self.output = 'Score: {}, Time: {}, Lives: {}'.format(
-            self.score, self.time, self.lives)
+        self.__score += count
+        self.__time += tme
+        self.__lives -= lives
+        self.__output = 'Score: {}, Time: {}, Lives: {}'.format(
+            self.__score, self.__time, self.__lives)
         for i in range(height):
             for j in range(width):
-                if j < len(self.output):
-                    play_field[i][j] = self.output[j]
+                if j < len(self.__output):
+                    play_field[i][j] = self.__output[j]
                 else:
                     break
             break
 
-        return self.lives > 0
+        return self.__lives >= 1
