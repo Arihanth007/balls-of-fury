@@ -10,7 +10,6 @@ from powerup import Powerup
 from input import getInput
 from input import input_to
 from config import height, width, powerups_array
-from gameflow import GameFlow
 
 
 # Creating instances of classes
@@ -101,6 +100,7 @@ def update_block_strength():
     num = 1  # by default
 
     # if the ball can pass through any block
+
     if ball.power_up_collision:
         num = np.inf
 
@@ -116,6 +116,8 @@ def update_block_strength():
             blue_blocks.reduce_block_strength(
                 block, screen.play_field, num)
         elif color == 'yellow':
+            # collision with exploding block
+            num = np.inf
             powerup_blocks.reduce_block_strength(
                 block, screen.play_field, num)
         elif color == 'white':
