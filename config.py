@@ -1,4 +1,4 @@
-from colorama import Fore, Back, Style
+from colorama import Back
 
 # Screen dimensions
 height = 30

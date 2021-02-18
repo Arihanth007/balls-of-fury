@@ -11,7 +11,7 @@ class Powerup:
         self.__array_of_powerups = powerups_array
         self.__temp = []
         for i in range(len(self.__array_of_powerups)):
-            t = powerups_array
+            t = [False]*6
             t[i] = not(t[i])
             self.__temp.append(t)
 

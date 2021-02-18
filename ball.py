@@ -6,7 +6,7 @@ class Ball:
 
     def __init__(self):
         self.start = [height-3, int(width/2)]
-        self.__previous = [self.start[0]+1, self.start[1]+1]
+        self.previous = [self.start[0]+1, self.start[1]+1]
         self.current = [self.start[0], self.start[1]]
         self.__next = [self.start[0], self.start[1]]
         self.__x_velocity = 1
@@ -18,7 +18,7 @@ class Ball:
         play_field[self.start[0]][self.start[1]] = 'ball'
 
     def print(self, play_field):
-        play_field[self.__previous[0]][self.__previous[1]] = black
+        play_field[self.previous[0]][self.previous[1]] = black
         play_field[self.current[0]][self.current[1]] = 'ball'
 
     def place_ball(self, play_field, slider_dimensions):
@@ -30,7 +30,7 @@ class Ball:
             play_field[self.current[0]][self.current[1]] = black
             self.current[1] += t
             self.__next[1] += t
-            self.__previous[1] += t
+            self.previous[1] += t
             play_field[self.current[0]][self.current[1]] = 'ball'
             self.start[1] = self.current[1]
 
@@ -126,9 +126,9 @@ class Ball:
     def set_state(self, play_field, blocks, slider_dimensions):
         x = self.__x_velocity
         y = self.__y_velocity
-        if self.current[0] - self.__previous[0] < 0:
+        if self.current[0] - self.previous[0] < 0:
             x *= -1
-        if self.current[1] - self.__previous[1] < 0:
+        if self.current[1] - self.previous[1] < 0:
             y *= -1
         print(x, y)
 
@@ -138,9 +138,9 @@ class Ball:
                 self.__check_wall_collision(x, y)
                 self.collided_with = None
 
-            play_field[self.__previous[0]
-                       ][self.__previous[1]] = black
-            self.__previous = [self.current[0], self.current[1]]
+            play_field[self.previous[0]
+                       ][self.previous[1]] = black
+            self.previous = [self.current[0], self.current[1]]
             self.current = [self.__next[0], self.__next[1]]
             return True
 
