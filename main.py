@@ -32,11 +32,11 @@ key_input = getInput()
 # Initializations
 slider.init_slider(screen.play_field)
 
-indestructible_blocks.init_blocks(screen.play_field, 15, 2)
-red_blocks.init_blocks(screen.play_field, 10, 5)
-powerup_blocks.init_blocks(screen.play_field, 50, 6)
-green_blocks.init_blocks(screen.play_field, 10, 7)
-blue_blocks.init_blocks(screen.play_field, 5, 10)
+indestructible_blocks.init_blocks(screen.play_field, 6, 2)
+red_blocks.init_blocks(screen.play_field, 12, 5)
+powerup_blocks.init_blocks(screen.play_field, 50, 8)
+green_blocks.init_blocks(screen.play_field, 12, 7)
+blue_blocks.init_blocks(screen.play_field, 6, 10)
 
 ball.init_ball(screen.play_field)
 display(screen.play_field)
@@ -73,7 +73,7 @@ def update_lives():
 # Press P to release
 def hold_ball():
 
-    print('Adjust the board and press P to resume')
+    print('Adjust the board using A, D and press P to release the ball')
     k_press = 'notPlol'
     while k_press != 'p':
         slider.move(screen.play_field, k_press)
