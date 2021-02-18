@@ -3,7 +3,7 @@ from time import clock_getres, sleep
 from colorama import Fore, Back, Style
 from input import getInput
 from screen import display
-from config import height, width
+from config import height, width, lives
 
 
 class Score:
@@ -11,14 +11,14 @@ class Score:
     def __init__(self) -> None:
         self.score = 0
         self.time = 0
-        self.lives = 1
+        self.lives = lives
         self.output = 'Score: {}, Time: {}, Lives: {}'.format(
             self.score, self.time, self.lives)
 
     def update_score(self, count, tme, lives, play_field):
         self.score += count
         self.time += tme
-        self.lives = lives
+        self.lives -= lives
         self.output = 'Score: {}, Time: {}, Lives: {}'.format(
             self.score, self.time, self.lives)
         for i in range(height):
@@ -28,3 +28,5 @@ class Score:
                 else:
                     break
             break
+
+        return self.lives > 0

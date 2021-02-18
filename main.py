@@ -5,11 +5,11 @@ from screen import Screen, display, flush_display
 from slider import Slider
 from blocks import GreenBlocks, RedBlocks, BlueBlocks, IndestructibleBlocks, PowerupBlocks
 from ball import Ball
-# from ball import Ball, SecondBall
 from score import Score
 from powerup import Powerup
 from input import getInput
 from input import input_to
+from config import height, width
 
 
 # Creating instances of classes
@@ -19,12 +19,11 @@ slider = Slider()
 blue_blocks = BlueBlocks(1, 'blue')
 green_blocks = GreenBlocks(2, 'green')
 red_blocks = RedBlocks(3, 'red')
-indestructible_blocks = IndestructibleBlocks(10, 'white')
+indestructible_blocks = IndestructibleBlocks(np.inf, 'white')
 powerup_blocks = PowerupBlocks(1, 'yellow')
 
 ball = Ball()
 second_ball = Ball()
-# second_ball = SecondBall()
 score = Score()
 power_up = Powerup()
 key_input = getInput()
@@ -35,9 +34,9 @@ slider.init_slider(screen.play_field)
 
 indestructible_blocks.init_blocks(screen.play_field, 15, 2)
 red_blocks.init_blocks(screen.play_field, 10, 5)
-powerup_blocks.init_blocks(screen.play_field, 50, 11)
+powerup_blocks.init_blocks(screen.play_field, 50, 6)
 green_blocks.init_blocks(screen.play_field, 10, 7)
-blue_blocks.init_blocks(screen.play_field, 10, 10)
+blue_blocks.init_blocks(screen.play_field, 5, 10)
 
 ball.init_ball(screen.play_field)
 
@@ -51,6 +50,16 @@ isTrue2 = False
 # expand, shrink, miltiple, fast, through, grab, powerup
 isPowerup = [False]*6
 start_time = time()
+
+
+def update_lives():
+    global ball
+    ball = Ball()
+    screen.play_field[ball.previous[0]][ball.previous[1]] = Back.BLACK + ' '
+    screen.play_field[ball.current[0]][ball.current[1]] = Back.BLACK + ' '
+    ball.init_ball(screen.play_field)
+    ball.print(screen.play_field)
+    hold_ball()
 
 
 def hold_ball():
@@ -148,8 +157,7 @@ def check_powerup():
     if isPowerup[2]:
         if isTrue1:
             isTrue2 = True
-            second_ball.start = [ball.collided_with[0]
-                                 [0]+1, ball.collided_with[0][1]+1]
+            second_ball.start = [height-3, int(width/2)]
         isPowerup[2] = False
 
     if isPowerup[3]:
@@ -174,34 +182,43 @@ def main():
     global isTrue1
     global isTrue2
     global isPowerup
-
-    check_powerup()
+    slider_dimensions = [slider.slider_width[0], slider.slider_width[1]]
 
     if isTrue1:
-        isTrue1 = ball.set_state(screen.play_field, all_blocks, [
-            slider.slider_width[0], slider.slider_width[1]])
+        isTrue1 = ball.set_state(
+            screen.play_field, all_blocks, slider_dimensions)
         ball.print(screen.play_field)
     if isTrue2:
-        isTrue2 = second_ball.set_state(screen.play_field, all_blocks, [
-            slider.slider_width[0], slider.slider_width[1]])
+        isTrue2 = second_ball.set_state(
+            screen.play_field, all_blocks, slider_dimensions)
         second_ball.print(screen.play_field)
 
     if ball.collided_with is not None:
-        isPowerup = [0.5 > i for i in np.random.rand(7)]
+        if 0.3 > np.random.rand() and power_up.start is None:
+            power_up.init_powerup(
+                ball.collided_with[0][0], ball.collided_with[0][1])
         update_block_strength()
         score.update_score(len(ball.collided_with), int(time() -
-                                                        start_time), 1, screen.play_field)
-    refresh_all_blocks()
-
+                                                        start_time), 0, screen.play_field)
     if second_ball.collided_with is not None:
+        if 0.3 > np.random.rand() and power_up.start is None:
+            power_up.init_powerup(
+                second_ball.collided_with[0][0], second_ball.collided_with[0][1])
         update_second_block_strength()
         score.update_score(len(second_ball.collided_with), int(time() -
-                                                               start_time), 1, screen.play_field)
+                                                               start_time), 0, screen.play_field)
+
+    isPowerup = power_up.simulate_powerup(
+        screen.play_field, slider_dimensions)
+    check_powerup()
     refresh_all_blocks()
 
-    score.update_score(0, int(time()-start_time), 1, screen.play_field)
+    score.update_score(0, int(time()-start_time), 0, screen.play_field)
     if not (isTrue1 or isTrue2):
-        score.update_score(0, int(time()-start_time), 0, screen.play_field)
+        if score.update_score(
+                0, int(time()-start_time), 1, screen.play_field):
+            isTrue1 = True
+            update_lives()
         display(screen.play_field)
 
     return isTrue1 or isTrue2

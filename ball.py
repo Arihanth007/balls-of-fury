@@ -53,7 +53,7 @@ class Ball:
             if self.current[1]+y >= slider_dimensions[0] and self.current[1]+y <= slider_dimensions[1]:
                 self.y_velocity = 1 + np.abs(
                     slider_width-(self.current[1]-y)) % 3
-                if y < 0:
+                if y < 0 and slider_dimensions[1]-y > slider_mid:
                     y = -self.y_velocity
                 else:
                     y = self.y_velocity

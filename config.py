@@ -4,3 +4,5 @@ height = 30
 width = 79
 
 block_size = 1
+
+lives = 2
