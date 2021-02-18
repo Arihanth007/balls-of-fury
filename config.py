@@ -22,4 +22,4 @@ Shrunk_width = int(4/2)
 powerups_array = [False]*6
 
 # Number of lives
-lives = 1
+lives = 2
