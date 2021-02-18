@@ -1,5 +1,7 @@
 from colorama import Back
 
+'''All number values must be integers'''
+
 # Screen dimensions
 height = 30
 width = 79

@@ -3,8 +3,18 @@ import numpy as np
 from config import height, width, red, green, blue, yellow, white, magenta, black
 
 
+# prints the entire 2D array
+# displays the playing field
+# or game board
 def display(play_field):
+
+    # clears the previous output
+    # makes it feel continuous
     os.system('clear')
+
+    # some strings have been coded
+    # to print verious colors, symbols
+    # prints the 2D array
     for i in range(height):
         for j in range(width):
             if play_field[i][j] == 'red':
@@ -26,23 +36,20 @@ def display(play_field):
         print('')
 
 
-def flush_display(play_field):
-    for i in range(height):
-        for j in range(width):
-            if play_field[i][j] == 'ball':
-                play_field[i][j] = black
-
-
 class Screen:
     ''' Display home screen '''
 
     def __init__(self, height, width):
+
+        # sets dimensions of the screen
         self.height = height
         self.width = width
 
+        # initializes everything to black blocks
         self.play_field = np.array([[black for j in range(
             self.width)] for i in range(self.height)], dtype='object')
 
+        # prints the borders
         for i in range(self.height):
             for j in range(self.width):
                 if j == 0 or j == self.width-1:
