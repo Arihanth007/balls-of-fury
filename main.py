@@ -10,6 +10,7 @@ from powerup import Powerup
 from input import getInput
 from input import input_to
 from config import height, width, powerups_array
+from gameflow import GameFlow
 
 
 # Creating instances of classes
@@ -86,7 +87,6 @@ def hold_ball():
 # Kind of like adding the block
 # to the screen after every iteration
 def refresh_all_blocks():
-
     green_blocks.refresh_blocks(screen.play_field)
     red_blocks.refresh_blocks(screen.play_field)
     blue_blocks.refresh_blocks(screen.play_field)
