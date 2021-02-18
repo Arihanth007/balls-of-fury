@@ -1,15 +1,13 @@
 import os
-from time import sleep
 import numpy as np
-from colorama import Fore, Back, Style
 from screen import display
-from config import height, width
+from config import height, width, black, Slider_Width, Shrunk_width, Expanded_Width
 
 
 class Slider:
 
     def __init__(self):
-        self.__swidth = 8
+        self.__swidth = 2*Slider_Width
 
     def init_slider(self, play_field):
         self.slider_width = np.array(
@@ -21,7 +19,7 @@ class Slider:
 
     def __print_slider(self, val, play_field):
         for i in range(1, width-1):
-            play_field[self.slider_height][i] = Back.BLACK + ' '
+            play_field[self.slider_height][i] = black
 
         if val > 0 and self.slider_width[1]+val < width:
             self.slider_width[0] += val
@@ -42,17 +40,17 @@ class Slider:
             self.__print_slider(-1, play_field)
 
     def shrink_slider(self, play_field):
-        self.__swidth = 4
-        self.slider_width[0] += 4
-        self.slider_width[1] -= 4
+        self.__swidth = 2*Shrunk_width
+        self.slider_width[0] += Slider_Width
+        self.slider_width[1] -= Slider_Width
         self.init_slider(play_field)
 
     def expand_slider(self,  play_field):
-        self.__swidth = 16
-        if self.slider_width[0] - 4 <= 1:
-            self.slider_width += (self.slider_width[0]-4)
-        if self.slider_width[1] + 4 >= width-1:
-            self.slider_width += (self.slider_width[1]+4)
-        self.slider_width[0] -= 4
-        self.slider_width[1] += 4
+        self.__swidth = 2*Expanded_Width
+        if self.slider_width[0] - Slider_Width <= 1:
+            self.slider_width += (self.slider_width[0]-Slider_Width)
+        if self.slider_width[1] + Slider_Width >= width-1:
+            self.slider_width += (self.slider_width[1]+Slider_Width)
+        self.slider_width[0] -= Slider_Width
+        self.slider_width[1] += Slider_Width
         self.init_slider(play_field)

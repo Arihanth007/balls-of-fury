@@ -1,6 +1,5 @@
 import numpy as np
-from colorama import Fore, Back, Style
-from config import height, width
+from config import height, width, black, powerups_array
 
 
 class Powerup:
@@ -9,10 +8,10 @@ class Powerup:
         self.start = None
         self.__previous = None
         self.__current = None
-        self.__array_of_powerups = [False]*6
+        self.__array_of_powerups = powerups_array
         self.__temp = []
         for i in range(len(self.__array_of_powerups)):
-            t = [False]*6
+            t = powerups_array
             t[i] = not(t[i])
             self.__temp.append(t)
 
@@ -26,14 +25,14 @@ class Powerup:
             if self.__current[0] < height-2:
                 play_field[self.__current[0]][self.__current[1]] = 'powerup'
                 play_field[self.__previous[0]
-                           ][self.__previous[1]] = Back.BLACK + ' '
+                           ][self.__previous[1]] = black
                 self.__previous[0] += 1
                 self.__current[0] += 1
             else:
                 play_field[self.__current[0]
-                           ][self.__current[1]] = Back.BLACK + ' '
+                           ][self.__current[1]] = black
                 play_field[self.__previous[0]
-                           ][self.__previous[1]] = Back.BLACK + ' '
+                           ][self.__previous[1]] = black
                 self.start = None
                 if self.__current[1] >= slider_dimensions[0] and self.__current[1] <= slider_dimensions[1]:
                     return self.__temp[np.random.randint(1, 6)]

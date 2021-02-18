@@ -1,6 +1,5 @@
 import numpy as np
-from colorama import Fore, Back, Style
-from config import height, width
+from config import height, width, black
 
 
 class Ball:
@@ -19,7 +18,7 @@ class Ball:
         play_field[self.start[0]][self.start[1]] = 'ball'
 
     def print(self, play_field):
-        play_field[self.__previous[0]][self.__previous[1]] = Back.BLACK + ' '
+        play_field[self.__previous[0]][self.__previous[1]] = black
         play_field[self.current[0]][self.current[1]] = 'ball'
 
     def place_ball(self, play_field, slider_dimensions):
@@ -28,7 +27,7 @@ class Ball:
 
         t = slider_mid-self.current[1]
         if t != 0:
-            play_field[self.current[0]][self.current[1]] = Back.BLACK + ' '
+            play_field[self.current[0]][self.current[1]] = black
             self.current[1] += t
             self.__next[1] += t
             self.__previous[1] += t
@@ -140,7 +139,7 @@ class Ball:
                 self.collided_with = None
 
             play_field[self.__previous[0]
-                       ][self.__previous[1]] = Back.BLACK + ' '
+                       ][self.__previous[1]] = black
             self.__previous = [self.current[0], self.current[1]]
             self.current = [self.__next[0], self.__next[1]]
             return True

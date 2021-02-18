@@ -9,7 +9,7 @@ from score import Score
 from powerup import Powerup
 from input import getInput
 from input import input_to
-from config import height, width
+from config import height, width, powerups_array
 
 
 # Creating instances of classes
@@ -47,8 +47,7 @@ ball.print(screen.play_field)
 #  Global variables
 isTrue1 = True
 isTrue2 = False
-# expand, shrink, miltiple, fast, through, grab, powerup
-isPowerup = [False]*6
+isPowerup = powerups_array  # expand, shrink, miltiple, fast, through, grab, powerup
 start_time = time()
 
 

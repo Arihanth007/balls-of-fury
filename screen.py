@@ -1,7 +1,6 @@
 import os
 import numpy as np
-from colorama import Fore, Back, Style
-from config import height, width
+from config import height, width, red, green, blue, yellow, white, magenta, black
 
 
 def display(play_field):
@@ -9,19 +8,19 @@ def display(play_field):
     for i in range(height):
         for j in range(width):
             if play_field[i][j] == 'red':
-                print(Back.RED + ' ', end='')
+                print(red, end='')
             elif play_field[i][j] == 'green':
-                print(Back.GREEN + ' ', end='')
+                print(green, end='')
             elif play_field[i][j] == 'blue':
-                print(Back.BLUE + ' ', end='')
+                print(blue, end='')
             elif play_field[i][j] == 'yellow':
-                print(Back.YELLOW + ' ', end='')
+                print(yellow, end='')
             elif play_field[i][j] == 'white':
-                print(Back.WHITE + ' ', end='')
+                print(white, end='')
             elif play_field[i][j] == 'ball':
                 print('*', end='')
             elif play_field[i][j] == 'powerup':
-                print(Back.MAGENTA + ' ', end='')
+                print(magenta, end='')
             else:
                 print(play_field[i][j], end='')
         print('')
@@ -31,7 +30,7 @@ def flush_display(play_field):
     for i in range(height):
         for j in range(width):
             if play_field[i][j] == 'ball':
-                play_field[i][j] = Back.BLACK + ' '
+                play_field[i][j] = black
 
 
 class Screen:
@@ -41,7 +40,7 @@ class Screen:
         self.height = height
         self.width = width
 
-        self.play_field = np.array([[Back.BLACK + ' ' for j in range(
+        self.play_field = np.array([[black for j in range(
             self.width)] for i in range(self.height)], dtype='object')
 
         for i in range(self.height):
