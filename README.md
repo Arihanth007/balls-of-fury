@@ -22,3 +22,8 @@ This is the container of the game.
 
 ## Power-Ups
 There are six power-ups. These are randomly generated on hitting some blocks and are represented by magenta blocks. Expanding of the paddle, shrinking of the paddle, mutiple balls, sped up ball, pass-through-anything ball and paddle grab come into effect on taking the power-up.
+
+## Running The Game
+Run the following commands:
+`pip3 install -r requirements.txt`
+`python3 main.py`
