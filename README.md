@@ -25,5 +25,5 @@ There are six power-ups. These are randomly generated on hitting some blocks and
 
 ## Running The Game
 Run the following commands:
-`pip3 install -r requirements.txt`
-`python3 main.py`
+```pip3 install -r requirements.txt
+python3 main.py```
