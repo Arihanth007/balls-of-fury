@@ -64,20 +64,16 @@ class Ball:
                 # sets velocity according to how close
                 # to the middle the collision took place
                 self.__y_velocity = 1 + np.abs(
-                    slider_width-(self.current[1]-y)) % 3
-
-                # reverses x-direction
-                self.__next[0] -= x
+                    slider_mid-(self.current[1]+y)) % 3
 
                 # decides whether to reverse the y-direction
-                if y < 0 and slider_dimensions[1]-y > slider_mid:
-                    y = -self.__y_velocity
-                else:
+                if self.current[1]+y > slider_mid:
                     y = self.__y_velocity
-                if (y > 0 and self.current[1]+y <= slider_mid) or (y < 0 and self.current[1]+y >= slider_mid):
-                    self.__next[1] -= y
                 else:
-                    self.__next[1] += y
+                    y = -self.__y_velocity
+
+                self.__next[0] -= x  # reverses x-direction
+                self.__next[1] += y
 
                 # returns true as collision with slider occurs
                 return True

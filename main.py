@@ -73,7 +73,7 @@ def update_lives():
 # Press P to release
 def hold_ball():
 
-    print('Adjust the board using A, D and press P to release the ball')
+    print('Adjust the paddle using A, D and press P to release the ball')
     k_press = 'notPlol'
     while k_press != 'p':
         slider.move(screen.play_field, k_press)
