@@ -17,10 +17,13 @@ class Blocks:
         play_field[block[0]][block[1]] = black
         for index, bl in enumerate(self.blocks):
             if bl == block:
-                if bl[3]-num <= 0:
-                    self.blocks.remove(bl)
-                else:
-                    self.blocks[index][3] -= num
+                self.blocks.remove(bl)
+                # This logic was built
+                # when blocks didn't change color
+                # if bl[3]-num <= 0:
+                #     self.blocks.remove(bl)
+                # else:
+                #     self.blocks[index][3] -= num
 
     # intializes the block positions
     def init_blocks(self, play_field, num, row):

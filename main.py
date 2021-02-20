@@ -109,9 +109,13 @@ def update_block_strength():
         if color == 'green':
             green_blocks.reduce_block_strength(
                 block, screen.play_field, num)
+            block[2] = 'blue'
+            blue_blocks.blocks.append(block)
         elif color == 'red':
             red_blocks.reduce_block_strength(
                 block, screen.play_field, num)
+            block[2] = 'green'
+            green_blocks.blocks.append(block)
         elif color == 'blue':
             blue_blocks.reduce_block_strength(
                 block, screen.play_field, num)
