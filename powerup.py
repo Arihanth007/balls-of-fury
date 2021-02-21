@@ -1,4 +1,5 @@
 import numpy as np
+from time import time
 from config import height, width, black, powerups_array
 
 
@@ -46,6 +47,6 @@ class Powerup:
                 self.start = None
                 if self.__current[1] >= slider_dimensions[0] and self.__current[1] <= slider_dimensions[1]:
                     # randomly picks a powerup
-                    return self.__temp[np.random.randint(1, 6)]
+                    return self.__temp[np.random.randint(1, 6)], time()
 
-        return self.__array_of_powerups
+        return self.__array_of_powerups, None

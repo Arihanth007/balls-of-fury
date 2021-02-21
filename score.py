@@ -16,7 +16,7 @@ class Score:
 
         # updates parameters during gameplay
         self.__score += count
-        self.__time += tme
+        self.__time = tme
         self.__lives -= lives
         self.__output = 'Score: {}, Time: {}, Lives: {}'.format(
             self.__score, self.__time, self.__lives)

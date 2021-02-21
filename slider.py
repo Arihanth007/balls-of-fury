@@ -38,9 +38,9 @@ class Slider:
     # Press d to move right
     def move(self, play_field, key_press):
         if key_press == 'd':
-            self.__print_slider(1, play_field)
+            self.__print_slider(2, play_field)
         elif key_press == 'a':
-            self.__print_slider(-1, play_field)
+            self.__print_slider(-2, play_field)
 
     # shrinks the slider in half
     def shrink_slider(self, play_field):

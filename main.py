@@ -1,6 +1,6 @@
 from colorama.ansi import Back
 import numpy as np
-from time import time
+from time import sleep, time
 from screen import Screen, display
 from slider import Slider
 from blocks import GreenBlocks, RedBlocks, BlueBlocks, IndestructibleBlocks, PowerupBlocks
@@ -48,6 +48,7 @@ isTrue1 = True
 isTrue2 = False
 isPowerup = powerups_array  # expand, shrink, miltiple, fast, through, grab, powerup
 start_time = time()
+isPowerup_change_time = time()
 
 
 # Reduces life of primary ball by 1
@@ -226,6 +227,7 @@ def main():
     global isTrue1
     global isTrue2
     global isPowerup
+    global isPowerup_change_time
     slider_dimensions = [slider.slider_width[0], slider.slider_width[1]]
 
     # Checks if ball 1 is active
@@ -263,8 +265,12 @@ def main():
 
     # set the powerups randomly
     # if above conditions are met
-    isPowerup = power_up.simulate_powerup(
+    isPowerup, temp = power_up.simulate_powerup(
         screen.play_field, slider_dimensions)
+    if temp is not None:
+        isPowerup_change_time = temp
+    if time()-isPowerup_change_time >= 10:
+        isPowerup = powerups_array
     check_powerup()
     refresh_all_blocks()
 
