@@ -1,4 +1,5 @@
-from config import height, width, black
+from config import height, width, black, red, green, blue
+import random
 
 
 class Blocks:
@@ -107,3 +108,31 @@ class PowerupBlocks(Blocks):
             play_field[cord[0] % height][cord[1]] = self.color
             self.blocks.append(
                 [cord[0] % height, cord[1], self.color, self.strength])
+
+
+class RainbowBlocks(Blocks):
+
+    def __init__(self):
+        self.blocks = []  # stores all present blocks
+
+    # intializes the block positions
+    def init_blocks(self, play_field, num, row):
+
+        # not actually random lol
+        cords = [[row, (i*int((width-10)/num)+10)] for i in range(num)]
+        color = ['blue', 'green', 'red']
+
+        # checks for some cases
+        # appends all blocks to the array
+        for cord in cords:
+            strength = random.choice([1, 2, 3])
+            play_field[cord[0] % height][cord[1]] = color[strength-1]
+            self.blocks.append(
+                [cord[0] % height, cord[1], color[strength-1], strength])
+
+    def rainbow_effect(self):
+        color = ['blue', 'green', 'red']
+        for index, bl in enumerate(self.blocks):
+            strength = random.choice([1, 2, 3])
+            self.blocks[index][2] = color[strength-1]
+            self.blocks[index][3] = strength

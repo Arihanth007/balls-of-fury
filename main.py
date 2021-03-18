@@ -3,7 +3,7 @@ import numpy as np
 from time import sleep, time
 from screen import Screen, display
 from slider import Slider
-from blocks import GreenBlocks, RedBlocks, BlueBlocks, IndestructibleBlocks, PowerupBlocks
+from blocks import GreenBlocks, RedBlocks, BlueBlocks, IndestructibleBlocks, PowerupBlocks, RainbowBlocks
 from ball import Ball
 from score import Score
 from powerup import Powerup
@@ -21,6 +21,7 @@ green_blocks = GreenBlocks(2, 'green')
 red_blocks = RedBlocks(3, 'red')
 indestructible_blocks = IndestructibleBlocks(np.inf, 'white')
 powerup_blocks = PowerupBlocks(1, 'yellow')
+rainbow_blocks = RainbowBlocks()
 
 ball = Ball()
 second_ball = Ball()
@@ -37,6 +38,7 @@ red_blocks.init_blocks(screen.play_field, 12, 5)
 powerup_blocks.init_blocks(screen.play_field, 50, 8)
 green_blocks.init_blocks(screen.play_field, 12, 7)
 blue_blocks.init_blocks(screen.play_field, 6, 10)
+rainbow_blocks.init_blocks(screen.play_field, 12, 12)
 
 ball.init_ball(screen.play_field)
 display(screen.play_field)
@@ -100,6 +102,7 @@ def refresh_all_blocks():
     blue_blocks.refresh_blocks(screen.play_field)
     indestructible_blocks.refresh_blocks(screen.play_field)
     powerup_blocks.refresh_blocks(screen.play_field)
+    rainbow_blocks.refresh_blocks(screen.play_field)
 
 
 # Called on collision of ball 1
@@ -135,6 +138,11 @@ def update_block_strength():
         elif color == 'white':
             indestructible_blocks.reduce_block_strength(
                 block, screen.play_field, num)
+        try:
+            rainbow_blocks.reduce_block_strength(
+                block, screen.play_field, num)
+        except:
+            pass
 
 
 # Called on collision of ball 2
@@ -152,22 +160,34 @@ def update_second_block_strength():
         if color == 'green':
             green_blocks.reduce_block_strength(
                 block, screen.play_field, num)
+            block[2] = 'blue'
+            blue_blocks.blocks.append(block)
         elif color == 'red':
             red_blocks.reduce_block_strength(
                 block, screen.play_field, num)
+            block[2] = 'green'
+            green_blocks.blocks.append(block)
         elif color == 'blue':
             blue_blocks.reduce_block_strength(
                 block, screen.play_field, num)
         elif color == 'yellow':
+            # collision with exploding block
+            num = np.inf
             powerup_blocks.reduce_block_strength(
                 block, screen.play_field, num)
         elif color == 'white':
             indestructible_blocks.reduce_block_strength(
                 block, screen.play_field, num)
-
+        try:
+            rainbow_blocks.reduce_block_strength(
+                block, screen.play_field, num)
+        except:
+            pass
 
 # Returns an array containing
 # coordinates of all blocks
+
+
 def combine_all_blocks():
 
     all_blocks = []
@@ -181,6 +201,8 @@ def combine_all_blocks():
         all_blocks.append(block)
     for block in powerup_blocks.blocks:
         all_blocks.append(block)
+    for block in rainbow_blocks.blocks:
+        all_blocks.append(block)
 
     return all_blocks
 
@@ -191,6 +213,7 @@ def move_blocks():
     blue_blocks.push_down(screen.play_field)
     indestructible_blocks.push_down(screen.play_field)
     powerup_blocks.push_down(screen.play_field)
+    rainbow_blocks.push_down(screen.play_field)
 
 
 # clears contents of all blocks
@@ -200,6 +223,7 @@ def clear_all_blocks():
     blue_blocks.clear_all(screen.play_field)
     indestructible_blocks.clear_all(screen.play_field)
     powerup_blocks.clear_all(screen.play_field)
+    rainbow_blocks.clear_all(screen.play_field)
 
 
 # Goes through the powerup array
@@ -285,6 +309,8 @@ def main():
             isDropblocks = False
     elif int(time()-start_time) % (block_drop_time+1) == 0:
         isDropblocks = True
+
+    rainbow_blocks.rainbow_effect()
 
     # Prints the entire screen
     display(screen.play_field)
