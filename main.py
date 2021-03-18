@@ -49,7 +49,7 @@ ball.print(screen.play_field)
 isTrue1 = True
 isTrue2 = False
 isTrue3 = True
-isPowerup = powerups_array  # expand, shrink, miltiple, fast, through, grab, powerup
+isPowerup = powerups_array  # expand, shrink, miltiple, fast, through, grab, canon
 start_time = time()
 isPowerup_change_time = time()
 level = 1
@@ -184,10 +184,45 @@ def update_second_block_strength():
         except:
             pass
 
+
+# Called on collision of bullets
+# Reduces block strength by 1
+def update_block_strength_bullet():
+
+    num = 1  # by default
+
+    for block in slider.collided_with:
+        color = block[2]
+        if color == 'green':
+            green_blocks.reduce_block_strength(
+                block, screen.play_field, num)
+            block[2] = 'blue'
+            blue_blocks.blocks.append(block)
+        elif color == 'red':
+            red_blocks.reduce_block_strength(
+                block, screen.play_field, num)
+            block[2] = 'green'
+            green_blocks.blocks.append(block)
+        elif color == 'blue':
+            blue_blocks.reduce_block_strength(
+                block, screen.play_field, num)
+        elif color == 'yellow':
+            # collision with exploding block
+            num = np.inf
+            powerup_blocks.reduce_block_strength(
+                block, screen.play_field, num)
+        elif color == 'white':
+            indestructible_blocks.reduce_block_strength(
+                block, screen.play_field, num)
+        try:
+            rainbow_blocks.reduce_block_strength(
+                block, screen.play_field, num)
+        except:
+            pass
+
+
 # Returns an array containing
 # coordinates of all blocks
-
-
 def combine_all_blocks():
 
     all_blocks = []
@@ -231,7 +266,7 @@ def clear_all_blocks():
 # resets the powerup array
 def check_powerup():
 
-    global isTrue2, isPowerup, output
+    global isTrue2, isPowerup, output, isPowerup_change_time
 
     if isPowerup[0]:
         output = 'Expand paddle'
@@ -268,7 +303,20 @@ def check_powerup():
         hold_ball()
         isPowerup[5] = False
 
-    print(output)
+    if isPowerup[6]:
+        output = 'canon'
+        isPowerup[6] = False
+
+    if output == 'canon':
+        slider.print_canons(screen.play_field)
+        slider.shoot_bullets(
+            slider.slider_width[0], slider.slider_width[1], screen.play_field, combine_all_blocks())
+    else:
+        slider.shoot_bullets(None, None, screen.play_field,
+                             combine_all_blocks())
+
+    if output == 'canon' or output == 'Through Ball' or output == 'Fast Ball' or output == 'Shrink Paddle' or output == 'Expand paddle':
+        print('Powerup: '+output, 5-int(time()-isPowerup_change_time))
 
 
 # Levels up the game
@@ -318,7 +366,7 @@ def main():
     # Initialize some variables
     all_blocks = combine_all_blocks()
 
-    global isTrue1, isTrue2, isTrue3, isPowerup, isPowerup_change_time, level, isLevelUp
+    global isTrue1, isTrue2, isTrue3, isPowerup, isPowerup_change_time, level, isLevelUp, output
     slider_dimensions = [slider.slider_width[0], slider.slider_width[1]]
 
     if all_blocks.count == 0:
@@ -346,7 +394,7 @@ def main():
 
     # Checks for Ball 1 collision with blocks
     if ball.collided_with is not None:
-        if 0.3 > np.random.rand() and power_up.start is None:
+        if 0.4 > np.random.rand() and power_up.start is None:
             # powerups are available
             power_up.init_powerup(
                 ball.collided_with[0][0], ball.collided_with[0][1], ball_x, ball_y)
@@ -357,7 +405,7 @@ def main():
 
     # Checks for Ball 2 collision with blocks
     if second_ball.collided_with is not None:
-        if 0.3 > np.random.rand() and power_up.start is None:
+        if 0.4 > np.random.rand() and power_up.start is None:
             # powerups are available
             power_up.init_powerup(
                 second_ball.collided_with[0][0], second_ball.collided_with[0][1], sball_x, sball_y)
@@ -366,14 +414,21 @@ def main():
         score.update_score(len(second_ball.collided_with), int(time() -
                                                                start_time), 0, level, screen.play_field)
 
+    if slider.collided_with.count != 0:
+        update_block_strength_bullet()
+
     # set the powerups randomly
     # if above conditions are met
     isPowerup, temp = power_up.simulate_powerup(
         screen.play_field, slider_dimensions)
     if temp is not None:
         isPowerup_change_time = temp
-    if time()-isPowerup_change_time >= 10:
+    if time()-isPowerup_change_time >= 5:
+        ball.reset(screen.play_field)
+        second_ball.reset(screen.play_field)
+        slider.reset(screen.play_field)
         isPowerup = powerups_array
+        output = ''
     check_powerup()
     refresh_all_blocks()
 

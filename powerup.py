@@ -17,7 +17,7 @@ class Powerup:
         self.y_vel = 0
         self.__count = 3
         for i in range(len(self.__array_of_powerups)):
-            t = [False]*6
+            t = [False]*len(self.__array_of_powerups)
             t[i] = not(t[i])
             self.__temp.append(t)
 
@@ -64,6 +64,6 @@ class Powerup:
                 self.start = None
                 if self.__current[1] >= slider_dimensions[0] and self.__current[1] <= slider_dimensions[1]:
                     # randomly picks a powerup
-                    return self.__temp[np.random.randint(1, 6)], time()
+                    return self.__temp[np.random.randint(0, 7)], time()
 
         return self.__array_of_powerups, None

@@ -20,11 +20,12 @@ Slider_Width = int(8/2)
 Expanded_Width = int(16/2)
 Shrunk_width = int(4/2)
 
-# expand, shrink, miltiple, fast, through, grab
-powerups_array = [False]*6
+# expand, shrink, miltiple, fast, through, grab, canon
+powerups_array = [False]*7
+# powerups_array = [False, False, False, False, False, False, True]
 
 # Number of lives
-lives = 2
+lives = 5
 
 # time taken to drop blocks
 block_drop_time = 10

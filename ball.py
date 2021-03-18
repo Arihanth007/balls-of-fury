@@ -50,6 +50,12 @@ class Ball:
     def pass_through_blocks(self):
         self.power_up_collision = True
 
+    def reset(self, play_field):
+        play_field[self.previous[0]][self.previous[1]] = black
+        self.x_velocity = 1
+        self.y_velocity = 1
+        self.power_up_collision = False
+
     # handles collision with slider
     def __check_slider_collision(self, x, y, play_field, slider_dimensions):
 
