@@ -188,7 +188,7 @@ class Ball:
             y *= -1
 
         # printing cause why not xD
-        print(x, y)
+        # print(x, y)
 
         # checks for slider collision
         # checks for obstacle collision

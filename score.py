@@ -12,14 +12,14 @@ class Score:
 
     # returns the status if the game
     # (game over or not)
-    def update_score(self, count, tme, lives, play_field):
+    def update_score(self, count, tme, lives, level, play_field):
 
         # updates parameters during gameplay
         self.__score += count
         self.__time = tme
         self.__lives -= lives
-        self.__output = 'Score: {}, Time: {}, Lives: {}'.format(
-            self.__score, self.__time, self.__lives)
+        self.__output = 'Score: {}, Time: {}, Lives: {}, Level: {}'.format(
+            self.__score, self.__time, self.__lives, level)
 
         # prints score, time and lives remaining
         for i in range(height):

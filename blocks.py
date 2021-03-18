@@ -18,12 +18,6 @@ class Blocks:
         for index, bl in enumerate(self.blocks):
             if bl == block:
                 self.blocks.remove(bl)
-                # This logic was built
-                # when blocks didn't change color
-                # if bl[3]-num <= 0:
-                #     self.blocks.remove(bl)
-                # else:
-                #     self.blocks[index][3] -= num
 
     # intializes the block positions
     def init_blocks(self, play_field, num, row):
@@ -47,6 +41,17 @@ class Blocks:
         for block in self.blocks:
             play_field[block[0]][block[1]] = block[2]
 
+    def clear_all(self, playfield):
+        for block in self.blocks:
+            playfield[block[0]][block[1]] = black
+        self.blocks.clear()
+
+    def push_down(self, playfield):
+        for index, bl in enumerate(self.blocks):
+            playfield[bl[0]][bl[1]] = black
+            self.blocks[index][0] = bl[0]+1
+        self.refresh_blocks(playfield)
+
 
 # example of inheritance
 class GreenBlocks(Blocks):
@@ -68,7 +73,20 @@ class BlueBlocks(Blocks):
 
 
 class IndestructibleBlocks(Blocks):
-    pass
+    # reduces the strength of the ball
+    # ball is removed based on strength
+    def reduce_block_strength(self, block, play_field, num):
+
+        # erases it from being displayed to avoid glitches
+        # it is added back by the refresh_blocks function
+        play_field[block[0]][block[1]] = black
+        for index, bl in enumerate(self.blocks):
+            # This logic was built
+            # when blocks didn't change color
+            if bl[3]-num <= 0:
+                self.blocks.remove(bl)
+            else:
+                self.blocks[index][3] -= num
 
 # example of inheritance
 # and polymorphism

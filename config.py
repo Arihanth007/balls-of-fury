@@ -25,3 +25,6 @@ powerups_array = [False]*6
 
 # Number of lives
 lives = 2
+
+# time taken to drop blocks
+block_drop_time = 10
