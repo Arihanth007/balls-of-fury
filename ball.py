@@ -9,10 +9,12 @@ class Ball:
         self.previous = [self.start[0]+1, self.start[1]+1]
         self.current = [self.start[0], self.start[1]]
         self.__next = [self.start[0], self.start[1]]
-        self.__x_velocity = 1
-        self.__y_velocity = 1
+        self.x_velocity = 1
+        self.y_velocity = 1
         self.collided_with = None
         self.power_up_collision = False
+        self.xv = 1
+        self.yv = 0
 
     # sets the starting position
     def init_ball(self, play_field):
@@ -41,8 +43,8 @@ class Ball:
 
     # powerup
     def increase_speed(self):
-        self.__x_velocity = 2
-        self.__y_velocity = 2
+        self.x_velocity = 2
+        self.y_velocity = 2
 
     # powerup
     def pass_through_blocks(self):
@@ -63,14 +65,14 @@ class Ball:
 
                 # sets velocity according to how close
                 # to the middle the collision took place
-                self.__y_velocity = 1 + np.abs(
+                self.y_velocity = 1 + np.abs(
                     slider_mid-(self.current[1]+y)) % 3
 
                 # decides whether to reverse the y-direction
                 if self.current[1]+y > slider_mid:
-                    y = self.__y_velocity
+                    y = self.y_velocity
                 else:
-                    y = -self.__y_velocity
+                    y = -self.y_velocity
 
                 self.__next[0] -= x  # reverses x-direction
                 self.__next[1] += y
@@ -178,14 +180,17 @@ class Ball:
 
         # makes a copy since these values
         # are changed by different functions
-        x = self.__x_velocity
-        y = self.__y_velocity
+        x = self.x_velocity
+        y = self.y_velocity
 
         # sets directionality
         if self.current[0] - self.previous[0] < 0:
             x *= -1
         if self.current[1] - self.previous[1] < 0:
             y *= -1
+
+        self.xv = x
+        self.yv = y
 
         # printing cause why not xD
         # print(x, y)

@@ -329,6 +329,9 @@ def main():
         if block[0] >= height-3:
             isTrue3 = False
 
+    ball_x, ball_y = ball.xv, ball.yv
+    sball_x, sball_y = second_ball.xv, second_ball.yv
+
     # Checks if ball 1 is active
     if isTrue1:
         isTrue1 = ball.set_state(
@@ -346,17 +349,18 @@ def main():
         if 0.3 > np.random.rand() and power_up.start is None:
             # powerups are available
             power_up.init_powerup(
-                ball.collided_with[0][0], ball.collided_with[0][1])
+                ball.collided_with[0][0], ball.collided_with[0][1], ball_x, ball_y)
         # Update block strength and score
         update_block_strength()
         score.update_score(len(ball.collided_with), int(time() -
                                                         start_time), 0, level, screen.play_field)
+
     # Checks for Ball 2 collision with blocks
     if second_ball.collided_with is not None:
         if 0.3 > np.random.rand() and power_up.start is None:
             # powerups are available
             power_up.init_powerup(
-                second_ball.collided_with[0][0], second_ball.collided_with[0][1])
+                second_ball.collided_with[0][0], second_ball.collided_with[0][1], sball_x, sball_y)
         # Update block strength and score
         update_second_block_strength()
         score.update_score(len(second_ball.collided_with), int(time() -
