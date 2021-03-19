@@ -20,9 +20,8 @@ Slider_Width = int(8/2)
 Expanded_Width = int(16/2)
 Shrunk_width = int(4/2)
 
-# expand, shrink, miltiple, fast, through, grab, canon
-powerups_array = [False]*7
-# powerups_array = [False, False, False, False, False, False, True]
+# expand, shrink, miltiple, fast, through, grab, canon, fireball
+powerups_array = [False]*8
 
 # Number of lives
 lives = 5

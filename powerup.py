@@ -68,6 +68,6 @@ class Powerup:
                     if isSound:
                         playsound('sounds/powerup.wav')
                     # randomly picks a powerup
-                    return self.__temp[np.random.randint(0, 7)], time()
+                    return self.__temp[np.random.randint(0, len(powerups_array))], time()
 
         return self.__array_of_powerups, None

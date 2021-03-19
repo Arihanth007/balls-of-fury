@@ -53,8 +53,9 @@ ball.print(screen.play_field)
 isTrue1 = True
 isTrue2 = False
 isTrue3 = True
-isPowerup = powerups_array  # expand, shrink, miltiple, fast, through, grab, canon
-isPowerup[-1] = True
+# expand, shrink, miltiple, fast, through, grab, canon, fireball
+isPowerup = powerups_array
+isPowerup[-1] = True  # testing
 start_time = time()
 isPowerup_change_time = time()
 level = 1
@@ -311,8 +312,14 @@ def check_powerup():
         isPowerup[5] = False
 
     if isPowerup[6]:
-        output = 'canon'
+        output = 'Canon'
         isPowerup[6] = False
+
+    if isPowerup[7]:
+        output = 'Fire Ball'
+        ball.fire_ball()
+        second_ball.fire_ball()
+        isPowerup[7] = False
 
     if output == 'canon':
         slider.print_canons(screen.play_field)
@@ -322,7 +329,7 @@ def check_powerup():
         slider.shoot_bullets(None, None, screen.play_field,
                              combine_all_blocks())
 
-    if output == 'canon' or output == 'Through Ball' or output == 'Fast Ball' or output == 'Shrink Paddle' or output == 'Expand paddle':
+    if output == 'canon' or output == 'Through Ball' or output == 'Fast Ball' or output == 'Shrink Paddle' or output == 'Expand paddle' or output == 'Fire Ball':
         print('Powerup: '+output, 5-int(time()-isPowerup_change_time))
 
 
@@ -337,7 +344,7 @@ def level_up():
         ball = Ball()
         ball.init_ball(screen.play_field)
         ball.print(screen.play_field)
-        isPowerup = [False]*6
+        isPowerup = powerups_array
         isLevelUp = False
         output = ''
         if level == 2:
@@ -349,6 +356,7 @@ def level_up():
             rainbow_blocks.init_blocks(screen.play_field, 12, 12)
         elif level == 3:
             indestructible_blocks.init_blocks(screen.play_field, 12, 5)
+            blue_blocks.init_blocks(screen.play_field, 50, 7)
             rainbow_blocks.init_blocks(screen.play_field, 8, 10)
         hold_ball()
 

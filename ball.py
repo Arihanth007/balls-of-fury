@@ -15,6 +15,7 @@ class Ball:
         self.y_velocity = 1
         self.collided_with = None
         self.power_up_collision = False
+        self.fireball = False
         self.xv = 1
         self.yv = 0
         self.boss_collision = False
@@ -53,11 +54,15 @@ class Ball:
     def pass_through_blocks(self):
         self.power_up_collision = True
 
+    def fire_ball(self):
+        self.fireball = True
+
     def reset(self, play_field):
         play_field[self.previous[0]][self.previous[1]] = black
         self.x_velocity = 1
         self.y_velocity = 1
         self.power_up_collision = False
+        self.fireball = False
 
     # handles collision with slider
     def __check_slider_collision(self, x, y, play_field, slider_dimensions):
@@ -155,6 +160,17 @@ class Ball:
                     Y_collision = False
 
                 self.collided_with = [block]  # sets collided block
+
+                if self.fireball:
+                    small_box = []
+                    for i in range(block[0]-1, block[0]+2):
+                        for j in range(block[1]-1, block[1]+2):
+                            small_box.append([i, j])
+
+                    for ele in small_box:
+                        for bls in blocks:
+                            if ele == [bls[0], bls[1]]:
+                                self.collided_with.append(bls)
 
                 # checks if collided with exploding block
                 if block[2] == 'yellow':
