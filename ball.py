@@ -1,6 +1,7 @@
 from time import sleep
 import numpy as np
-from config import height, width, black
+from playsound import playsound
+from config import height, width, black, isSound
 
 
 class Ball:
@@ -88,6 +89,8 @@ class Ball:
                 # returns true as collision with slider occurs
                 return True
             else:
+                if isSound:
+                    playsound('sounds/lose.wav')
                 # returns false as collision with slider was missed
                 return False
         else:
@@ -102,12 +105,16 @@ class Ball:
         if self.current[0] + x > 1 and self.current[0] + x < height-1:
             self.__next[0] += x
         else:
+            if isSound:
+                playsound('sounds/wall_collision.wav')
             self.__next[0] -= x
 
         # left and right collisions
         if self.current[1] + y > 1 and self.current[1] + y < width-1:
             self.__next[1] += y
         else:
+            if isSound:
+                playsound('sounds/wall_collision.wav')
             self.__next[1] -= y
 
     # handles block collisions by
@@ -134,6 +141,9 @@ class Ball:
 
             # checks for collision
             if [block[0], block[1]] in collision_box:
+                if isSound:
+                    playsound('sounds/random.wav')
+
                 X_collision = True
                 Y_collision = True
 

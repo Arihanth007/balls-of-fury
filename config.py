@@ -29,3 +29,5 @@ lives = 5
 
 # time taken to drop blocks
 block_drop_time = 10
+
+isSound = True

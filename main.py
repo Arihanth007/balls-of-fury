@@ -1,5 +1,6 @@
 from colorama.ansi import Back
 import numpy as np
+from playsound import playsound
 from time import sleep, time
 from screen import Screen, display
 from slider import Slider
@@ -9,7 +10,7 @@ from score import Score
 from powerup import Powerup
 from input import getInput
 from input import input_to
-from config import height, width, powerups_array, black, block_drop_time
+from config import height, width, powerups_array, black, block_drop_time, isSound
 
 
 # Creating instances of classes
@@ -500,3 +501,6 @@ while level <= 3 and main():
         isLevelUp = True
 
     slider.move(screen.play_field, key_pressed)
+
+if isSound:
+    playsound('sounds/gameover.wav')

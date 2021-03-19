@@ -1,6 +1,7 @@
 import numpy as np
+from playsound import playsound
 from time import time
-from config import height, width, black, powerups_array
+from config import height, width, black, powerups_array, isSound
 
 
 class Powerup:
@@ -61,8 +62,11 @@ class Powerup:
                            ][self.__current[1]] = black
                 play_field[self.__previous[0]
                            ][self.__previous[1]] = black
+
                 self.start = None
                 if self.__current[1] >= slider_dimensions[0] and self.__current[1] <= slider_dimensions[1]:
+                    if isSound:
+                        playsound('sounds/powerup.wav')
                     # randomly picks a powerup
                     return self.__temp[np.random.randint(0, 7)], time()
 

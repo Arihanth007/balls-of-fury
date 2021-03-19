@@ -1,7 +1,8 @@
 import numpy as np
+from playsound import playsound
 from time import time, sleep
 from screen import display
-from config import height, width, black, Slider_Width, Shrunk_width, Expanded_Width
+from config import height, width, black, Slider_Width, Shrunk_width, Expanded_Width, isSound
 
 
 class Slider:
@@ -80,10 +81,6 @@ class Slider:
     # expands the slider to double
     def expand_slider(self,  play_field):
         self.__swidth = 2*Expanded_Width
-        # if self.slider_width[0] - Slider_Width <= 1:
-        #     self.slider_width += (self.slider_width[0]-Slider_Width)
-        # if self.slider_width[1] + Slider_Width >= width-1:
-        #     self.slider_width += (self.slider_width[1]+Slider_Width)
         if self.slider_width[0] - Slider_Width <= 1:
             self.slider_width += abs(self.slider_width[0]-Slider_Width)
         if self.slider_width[1] + Slider_Width >= width-1:
@@ -181,5 +178,7 @@ class Slider:
                 print(bullet[0], bullet[1])
                 play_field[bullet[0]][bullet[1]] = 'o'
 
+        if isSound and isCollided:
+            playsound('sounds/lose.wav')
         return isCollided
         # return (not isCollided)
