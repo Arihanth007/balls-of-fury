@@ -42,11 +42,13 @@ class Blocks:
         for block in self.blocks:
             play_field[block[0]][block[1]] = block[2]
 
+    # resets all blocks on screen
     def clear_all(self, playfield):
         for block in self.blocks:
             playfield[block[0]][block[1]] = black
         self.blocks.clear()
 
+    # block moves down by 1
     def push_down(self, playfield):
         for index, bl in enumerate(self.blocks):
             playfield[bl[0]][bl[1]] = black
@@ -130,8 +132,15 @@ class RainbowBlocks(Blocks):
             self.blocks.append(
                 [cord[0] % height, cord[1], color[strength-1], strength])
 
+    # color, strength keeps changing
+    # until collided with
     def rainbow_effect(self):
+
+        # keeps track of color
+        # index+1 = strength of the color
         color = ['blue', 'green', 'red']
+
+        # randomly change colors
         for index, bl in enumerate(self.blocks):
             strength = random.choice([1, 2, 3])
             self.blocks[index][2] = color[strength-1]

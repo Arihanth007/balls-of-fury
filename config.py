@@ -25,8 +25,11 @@ powerups_array = [False]*8
 
 # Number of lives
 lives = 5
+bossLives = 3
 
 # time taken to drop blocks
 block_drop_time = 10
 
-isSound = True
+# Adds sounds effects
+isSound = False
+# isSound = True

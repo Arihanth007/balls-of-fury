@@ -36,6 +36,29 @@ def display(play_field):
         print('')
 
 
+# prints the borders
+def set_border(play_field):
+
+    for i in range(height):
+        for j in range(width):
+            if j == 0 or j == width-1:
+                play_field[i][j] = '|'
+            if i == 0 or i == height-1:
+                play_field[i][j] = '_'
+
+
+# clears everything
+def clear_entire_screen(play_field):
+
+    # clears everything
+    for i in range(height):
+        for j in range(width):
+            play_field[i][j] = black
+
+    # sets borders
+    set_border(play_field)
+
+
 class Screen:
     ''' Display home screen '''
 
@@ -50,9 +73,4 @@ class Screen:
             self.width)] for i in range(self.height)], dtype='object')
 
         # prints the borders
-        for i in range(self.height):
-            for j in range(self.width):
-                if j == 0 or j == self.width-1:
-                    self.play_field[i][j] = '|'
-                if i == 0 or i == self.height-1:
-                    self.play_field[i][j] = '_'
+        set_border(self.play_field)

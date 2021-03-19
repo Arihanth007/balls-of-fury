@@ -54,9 +54,11 @@ class Ball:
     def pass_through_blocks(self):
         self.power_up_collision = True
 
+    # powerup
     def fire_ball(self):
         self.fireball = True
 
+    # resets all powerups
     def reset(self, play_field):
         play_field[self.previous[0]][self.previous[1]] = black
         self.x_velocity = 1
@@ -161,7 +163,11 @@ class Ball:
 
                 self.collided_with = [block]  # sets collided block
 
+                # fireball powerup
                 if self.fireball:
+
+                    # checks a cube of dimension 2*2
+                    # for any other blocks
                     small_box = []
                     for i in range(block[0]-1, block[0]+2):
                         for j in range(block[1]-1, block[1]+2):
@@ -188,13 +194,19 @@ class Ball:
                                 if (bl[0] == powerup_block[0]+1 or bl[0] == powerup_block[0]-1) and (bl[1] == powerup_block[1]+1 or bl[1] == powerup_block[1]-1):
                                     self.collided_with.append(bl)
 
+        # checks collision with UFO(boss)
         if not X_collision and not Y_collision:
+
+            # boundary condition to avoid
+            # out of index errors
             for ele in collision_box:
                 if ele[1] >= width:
                     continue
 
+                # checks for UFO(boss)
                 if play_field[ele[0]][ele[1]] == '(' or play_field[ele[0]][ele[1]] == ')' or (play_field[ele[0]][ele[1]] == '-' and ele[0] < height/2):
 
+                    # collides with boss
                     self.boss_collision = True
                     X_collision = True
                     Y_collision = True
@@ -244,6 +256,7 @@ class Ball:
         if self.current[1] - self.previous[1] < 0:
             y *= -1
 
+        # duplicating values
         self.xv = x
         self.yv = y
 

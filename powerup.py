@@ -25,6 +25,7 @@ class Powerup:
     # tell it where to start from
     def init_powerup(self, x, y, xvel, yvel):
 
+        # assigns starting values
         self.start = [x, y]
         self.x_vel = xvel
         self.y_vel = yvel
@@ -35,14 +36,23 @@ class Powerup:
 
     def simulate_powerup(self, play_field, slider_dimensions):
 
+        # maintains number of frames before
+        # gravitity acts on a block
         self.__count -= 1
+
         # will enter only if a powerup exists
         if self.start is not None:
+
+            # checks if it passed the slider
             if self.__current[0] < height-2:
+
+                # sets and clears it from the screen
                 play_field[self.__current[0]][self.__current[1]] = 'powerup'
                 play_field[self.__previous[0]
                            ][self.__previous[1]] = black
 
+                # handling reflections
+                # and gravity
                 if self.__current[0] + self.x_vel < 1:
                     self.x_vel *= -1
                 if self.__count <= 0:
@@ -50,24 +60,34 @@ class Powerup:
                 if self.__current[1] + self.y_vel < 1 or self.__current[1] + self.y_vel > width-1:
                     self.y_vel *= -1
 
+                # set next position
                 self.__next[0] += self.x_vel
                 self.__next[1] += self.y_vel
 
+                # update positions
                 self.__previous = [self.__current[0], self.__current[1]]
                 self.__current = [self.__next[0], self.__next[1]]
 
             else:
-                # collision with slider occurs
+                # clears previous position
                 play_field[self.__current[0]
                            ][self.__current[1]] = black
                 play_field[self.__previous[0]
                            ][self.__previous[1]] = black
 
+                # resets start
                 self.start = None
+
+                # collides with slider
                 if self.__current[1] >= slider_dimensions[0] and self.__current[1] <= slider_dimensions[1]:
+
+                    # sound effect
                     if isSound:
                         playsound('sounds/powerup.wav')
+
                     # randomly picks a powerup
+                    # (returns an array)
                     return self.__temp[np.random.randint(0, len(powerups_array))], time()
 
+        # no powerup is true
         return self.__array_of_powerups, None
