@@ -116,6 +116,7 @@ class Slider:
         play_field[self.slider_height-1][self.slider_width[1]] = '|'
 
     def shoot_bullets(self, l, r, play_field, blocks):
+        self.collided_with.clear()
 
         for bullet in self.bullets:
             play_field[bullet[0]][bullet[1]] = black

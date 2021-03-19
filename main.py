@@ -7,7 +7,6 @@ from blocks import GreenBlocks, RedBlocks, BlueBlocks, IndestructibleBlocks, Pow
 from ball import Ball
 from score import Score
 from powerup import Powerup
-# from boss import Boss
 from input import getInput
 from input import input_to
 from config import height, width, powerups_array, black, block_drop_time
@@ -28,7 +27,6 @@ ball = Ball()
 second_ball = Ball()
 score = Score()
 power_up = Powerup()
-# boss = Boss()
 key_input = getInput()
 
 
@@ -55,6 +53,7 @@ isTrue1 = True
 isTrue2 = False
 isTrue3 = True
 isPowerup = powerups_array  # expand, shrink, miltiple, fast, through, grab, canon
+isPowerup[-1] = True
 start_time = time()
 isPowerup_change_time = time()
 level = 1
@@ -418,6 +417,9 @@ def main():
         update_second_block_strength()
         score.update_score(len(second_ball.collided_with), int(time() -
                                                                start_time), 0, level, screen.play_field)
+
+    score.update_score(len(slider.collided_with), int(
+        time()-start_time), 0, level, screen.play_field)
 
     if ball.boss_collision:
         slider.boss_lives -= 1
