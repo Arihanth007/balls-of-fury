@@ -1,3 +1,4 @@
+from time import sleep
 import numpy as np
 from config import height, width, black
 
@@ -15,6 +16,7 @@ class Ball:
         self.power_up_collision = False
         self.xv = 1
         self.yv = 0
+        self.boss_collision = False
 
     # sets the starting position
     def init_ball(self, play_field):
@@ -118,6 +120,7 @@ class Ball:
         # and collision
         X_collision = False
         Y_collision = False
+        self.boss_collision = False
 
         # takes into account all the cells
         # that come in the balls trajectory
@@ -158,6 +161,26 @@ class Ball:
                             for powerup_block in self.collided_with:
                                 if (bl[0] == powerup_block[0]+1 or bl[0] == powerup_block[0]-1) and (bl[1] == powerup_block[1]+1 or bl[1] == powerup_block[1]-1):
                                     self.collided_with.append(bl)
+
+        if not X_collision and not Y_collision:
+            for ele in collision_box:
+                if ele[1] >= width:
+                    continue
+
+                if play_field[ele[0]][ele[1]] == '(' or play_field[ele[0]][ele[1]] == ')' or (play_field[ele[0]][ele[1]] == '-' and ele[0] < height/2):
+
+                    self.boss_collision = True
+                    X_collision = True
+                    Y_collision = True
+
+                    # checks for horizontal collisions
+                    if self.__next[0] == ele[0]:
+                        X_collision = False
+                    # checks for vertical collisions
+                    if self.__next[1] == ele[1]:
+                        Y_collision = False
+
+                    break
 
         # no reflection for pass-through ball
         if (X_collision or Y_collision) and self.power_up_collision:

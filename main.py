@@ -7,6 +7,7 @@ from blocks import GreenBlocks, RedBlocks, BlueBlocks, IndestructibleBlocks, Pow
 from ball import Ball
 from score import Score
 from powerup import Powerup
+# from boss import Boss
 from input import getInput
 from input import input_to
 from config import height, width, powerups_array, black, block_drop_time
@@ -27,6 +28,7 @@ ball = Ball()
 second_ball = Ball()
 score = Score()
 power_up = Powerup()
+# boss = Boss()
 key_input = getInput()
 
 
@@ -44,6 +46,9 @@ ball.init_ball(screen.play_field)
 display(screen.play_field)
 ball.print(screen.play_field)
 
+# boss.init_boss(screen.play_field,
+#    (slider.slider_width[0]+slider.slider_width[1])/2)
+
 
 #  Global variables
 isTrue1 = True
@@ -56,6 +61,7 @@ level = 1
 isLevelUp = True
 output = ''
 isDropblocks = True
+isBossBullets = True
 
 
 # Reduces life of primary ball by 1
@@ -63,7 +69,6 @@ def update_lives():
 
     # Creates a new instance of the ball
     global ball
-    ball = Ball()
 
     global output
     output = ''
@@ -71,6 +76,8 @@ def update_lives():
     # Clears out the previous ball
     screen.play_field[ball.previous[0]][ball.previous[1]] = Back.BLACK + ' '
     screen.play_field[ball.current[0]][ball.current[1]] = Back.BLACK + ' '
+
+    ball = Ball()
 
     # Initializes the new ball
     ball.init_ball(screen.play_field)
@@ -339,18 +346,16 @@ def level_up():
             powerup_blocks.init_blocks(screen.play_field, 50, 8)
             green_blocks.init_blocks(screen.play_field, 16, 7)
             blue_blocks.init_blocks(screen.play_field, 10, 10)
+            rainbow_blocks.init_blocks(screen.play_field, 12, 12)
         elif level == 3:
-            # indestructible_blocks.init_blocks(screen.play_field, 6, 2)
-            # red_blocks.init_blocks(screen.play_field, 12, 5)
-            powerup_blocks.init_blocks(screen.play_field, 50, 8)
-            # green_blocks.init_blocks(screen.play_field, 12, 7)
-            blue_blocks.init_blocks(screen.play_field, 6, 10)
+            indestructible_blocks.init_blocks(screen.play_field, 12, 5)
+            rainbow_blocks.init_blocks(screen.play_field, 8, 10)
         hold_ball()
 
 
 # Main function that runs the code
 def main():
-    global isDropblocks
+    global isDropblocks, isBossBullets
     if int(time()-start_time) % block_drop_time == 0 and int(time()-start_time) != 0:
         if isDropblocks:
             move_blocks()
@@ -369,7 +374,7 @@ def main():
     global isTrue1, isTrue2, isTrue3, isPowerup, isPowerup_change_time, level, isLevelUp, output
     slider_dimensions = [slider.slider_width[0], slider.slider_width[1]]
 
-    if all_blocks.count == 0:
+    if all_blocks.count == 0 or (level == 3 and slider.boss_lives == 0):
         level += 1
         isLevelUp = True
 
@@ -414,6 +419,11 @@ def main():
         score.update_score(len(second_ball.collided_with), int(time() -
                                                                start_time), 0, level, screen.play_field)
 
+    if ball.boss_collision:
+        slider.boss_lives -= 1
+    if second_ball.boss_collision:
+        slider.boss_lives -= 1
+
     if slider.collided_with.count != 0:
         update_block_strength_bullet()
 
@@ -440,6 +450,29 @@ def main():
             isTrue1 = True
             update_lives()
         display(screen.play_field)
+
+    if level == 3:
+        print('Boss Lives = ', slider.boss_lives)
+        slider.isBoss = True
+
+        if int(time()-start_time) % 3 == 0 and int(time()-start_time) != 0:
+            if isBossBullets:
+                if slider.boss_shoots_bullets(screen.play_field, True):
+                    isTrue3 = score.update_score(
+                        0, int(time()-start_time), 1, level, screen.play_field)
+                    update_lives()
+                # isTrue3 = isTrue3 and slider.boss_shoots_bullets(
+                #     screen.play_field, True)
+                isBossBullets = False
+        elif int(time()-start_time) % (3+1) == 0:
+            isBossBullets = True
+
+        if slider.boss_shoots_bullets(screen.play_field, False):
+            isTrue3 = score.update_score(
+                0, int(time()-start_time), 1, level, screen.play_field)
+            update_lives()
+        # isTrue3 = isTrue3 and slider.boss_shoots_bullets(
+        #     screen.play_field, False)
 
     # continues if either ball is active
     # and blocks haven't reached the slider
